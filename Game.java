@@ -57,7 +57,6 @@ public class Game {
 
   /** Resets all stats */
   private void restart() {
-    won = false;
     numPieces = Board.generatePieces();
     player1.resetScore();
     player2.resetScore();

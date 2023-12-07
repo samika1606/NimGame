@@ -4,17 +4,23 @@ import java.util.Random;
 public class Player{
   private int score;
   private String name;
-
-  public Player(String name){ 
-    this.name = name;
-    score = 0;
-  }
+  private boolean isAuto;
 
   public Player(){
     System.out.println("Enter your name: ");
     Scanner input = new Scanner(System.in);
     name = input.nextLine();
 
+    System.out.println("Do you want to turn on autoplay? (Y/N)");
+    String answer = input.nextLine();
+    
+    while (!answer.equals("Y") && !answer.equals("N") && !answer.equals("n") && !answer.equals("y")) {
+      System.out.println("Please enter Y or N.");
+      answer = input.nextLine();
+    }
+
+    isAuto = (answer.equals("Y") || answer.equals("y"));
+    
     score = 0;
   }
 
@@ -24,12 +30,19 @@ public class Player{
   */
   public int takePieces (int remainingPieces){
     System.out.println(name + "'s Turn - Enter number of pieces to take: ");
+    int piecesTaken;
     Scanner input = new Scanner(System.in);
-    int piecesTaken = getUserPieces(input);
-    
-    while (piecesTaken > (remainingPieces/2)) {
-      System.out.println("Enter a new number of pieces, the number you selected was greater than half of the remaining amount!");
+    if (isAuto) {
+      piecesTaken = remainingPieces / 2;
+      System.out.println(piecesTaken);
+    } 
+    else {
       piecesTaken = getUserPieces(input);
+      
+      while (piecesTaken > (remainingPieces / 2)) {
+        System.out.println("Enter a new number of pieces, the number you selected was greater than half of the remaining amount!");
+        piecesTaken = getUserPieces(input);
+      }
     }
     
     score += piecesTaken;
@@ -68,4 +81,8 @@ public class Player{
     score = 0;
   }
 
+  /** Resets Automatic Player */
+  public void setIsAuto(boolean auto) {
+    isAuto = auto;
+  }
 }
